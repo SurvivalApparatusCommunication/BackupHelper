@@ -96,7 +96,7 @@ void RecoverWorld() {
 
 enum BackupOperation : int { reload = 1, cancel = 2, list = 3 };
 struct BackupMainCommand {
-    BackupOperation backupOperation;
+    BackupOperation backupOperation = BackupOperation(0);
 };
 struct BackupRecoverCommand {
     int recoverNumber;
@@ -105,7 +105,7 @@ struct BackupRecoverCommand {
 void RegisterCommand() {
     using ll::command::CommandRegistrar;
     auto& command = ll::command::CommandRegistrar::getInstance()
-                        .getOrCreateCommand("backup", "Create a backup"_tr(), CommandPermissionLevel::GameDirectors);
+                        .getOrCreateCommand("backup", "Create a backup"_tr(), CommandPermissionLevel::Any);
     command.overload<BackupMainCommand>()
         .optional("backupOperation")
         .execute([&](CommandOrigin const&     origin,
